@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<control>
+	<!-- <Role>master</Role> -->
+	<messager>
+		<urltodo name="urltodo" activated="false">
+			<ip>192.168.1.28</ip>
+			<port>61616</port>
+		</urltodo>
+		<urlfilter name="urlfilter" activated="false">
+			<ip>192.168.1.28</ip>
+			<port>61616</port>
+		</urlfilter>
+	</messager>
+	<db>
+		<dbfilter name="filter" activated="false">
+			<ip>192.168.1.28</ip>
+			<port>61616</port>
+			<database>filter</database>
+			<table></table>
+		</dbfilter>
+		<dbpage name="page" activated="false">
+			<ip>192.168.1.28</ip>
+			<port>61616</port>
+			<database>page</database>
+			<table></table>
+		</dbpage>
+	</db>
+	<downloader activated="false">
+		<count>5</count>
+		<delay unit="millisecond">5000</delay>
+	</downloader>
+</control>
