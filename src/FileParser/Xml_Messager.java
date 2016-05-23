@@ -2,6 +2,8 @@ package FileParser;
 /**
  * @author vito
  * @category message queue configuration in the file
+ * 
+ * time:	2016-5-7
  */
 public class Xml_Messager{
 	public String name;

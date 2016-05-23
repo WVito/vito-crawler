@@ -1,6 +1,7 @@
 /**
  * @author vito
  * @category downloader on slave configuration
+ * time:	2016-5-7
  */
 package FileParser;
 

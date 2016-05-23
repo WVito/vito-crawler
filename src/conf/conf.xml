@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <control>
-	<!-- <Role>master</Role> -->
 	<messager>
-		<urltodo name="urltodo" activated="false">
+		<mq name="urltodo">
 			<ip>192.168.1.28</ip>
 			<port>61616</port>
-		</urltodo>
-		<urlfilter name="urlfilter" activated="false">
+			<user></user>
+			<password></password>
+		</mq>
+		<mq name="urlfilter">
 			<ip>192.168.1.28</ip>
 			<port>61616</port>
-		</urlfilter>
+			<user></user>
+			<password></password>
+		</mq>
 	</messager>
 	<db>
-		<dbfilter name="filter" activated="false">
-			<ip>192.168.1.28</ip>
-			<port>61616</port>
-			<database>filter</database>
-			<table></table>
-		</dbfilter>
-		<dbpage name="page" activated="false">
-			<ip>192.168.1.28</ip>
-			<port>61616</port>
-			<database>page</database>
-			<table></table>
-		</dbpage>
+		<ip>192.168.1.28</ip>
+		<port>61616</port>
+		<database>webpageDB</database>
+		<collection>content</collection>
 	</db>
-	<downloader activated="false">
+	<filter name="BloomFilter">
+		<size>64000000</size>
+		<fingerprintCount>32</fingerprintCount>
+	</filter>
+	<downloader>
 		<count>5</count>
-		<delay unit="millisecond">5000</delay>
+		<delay>5000</delay>
+		<unit>millisecond</unit>
 	</downloader>
 </control>

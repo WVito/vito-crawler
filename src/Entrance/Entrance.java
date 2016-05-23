@@ -1,56 +1,52 @@
 package Entrance;
 
+import org.apache.activemq.ActiveMQConnection;
+
+import BloomFilter.BloomFilter;
+import Controllers.MessagePool;
+import Controllers.MessageProcess;
+import Controllers.URLFilterConsumer;
+import Controllers.URLTODOConsumer;
 import FileParser.XmlParser;
+import MQController.MQProducer;
 
 public class Entrance {
-	
-	//private static XmlParser xmlParser = null;
-	public static void main(String[] args) {
+	/**
+	 * need to be activated in main:
+	 * URLTODOConsumer:		on slave
+	 * MessagePool:					on slave
+	 * MessageProcess:			on slave
+	 * URLFilterConsumer:		on master
+	 * BloomFilter						on master
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */	
+	public static void main(String[] args) throws Exception {
+		System.out.println("program started!");
 		
-		XmlParser xmlParser = new XmlParser();
-		if(xmlParser.xmlData.urlTODO.isActivated){
-			runMQ_URLTODO();
-			System.out.println("MQ_URL_TODO running");
+		System.out.println("parse xml configuration file.");
+		XmlParser xmlParser = new XmlParser( );
+		System.out.println("parse done, now produce initial url to message queue.");
+		MQProducer initialProducer = new MQProducer(xmlParser.urltodoParameter);
+		initialProducer.sendMessage("");
+		
+		if( !xmlParser.activateDownload){			//master
+			Runnable urlFilterConsumer = new URLFilterConsumer(xmlParser.urlfilterParameter);	//activate UrlFilterConsumer
+			Thread tu = new Thread(urlFilterConsumer);
+			tu.start();
+			BloomFilter bloom = new BloomFilter(xmlParser.filter_size);	//initialize Bloom filter
+		}else{			//slave
+			Runnable urltodoConsumer = new URLTODOConsumer(xmlParser.urltodoParameter);		//activate UrlTodoConsumer
+			Thread tu = new Thread(urltodoConsumer);
+			tu.start();
+			MessagePool messagePool = new MessagePool(10);	//initialize MessagePool
+			MessageProcess messageProcess = new MessageProcess(xmlParser.urltodoParameter,		//activate MessageProcess
+					xmlParser.dbParameter, xmlParser.threadCount);
+			Thread tm = new Thread(messageProcess);
+			tm.start();
 		}
-		if(xmlParser.xmlData.urlFilter.isActivated){
-			runMQ_URLFilter();
-			System.out.println("MQ_URL_FILTER running");
-		}
-		if(xmlParser.xmlData.pageDB.isActivated){
-			runDB_Page();
-			System.out.println("DB_PAGE running");
-		}
-		if(xmlParser.xmlData.filterDB.isActivated){
-			runDB_Filter();
-			System.out.println("DB_FILTER running");
-		}
-		if(xmlParser.xmlData.downloader.isActivated){
-			runDownLoader();
-			System.out.println("DOWNLOADER running");
-		}
-
+		
 		System.out.println("program out!");
-	}
-	
-	public static void runMQ_URLTODO() {
-		//
-	}
-	
-	public static void runMQ_URLFilter(){
-		//produer: produce message to MQ urltodo
-		//consumer: consume message from MQ urlfilter
-		//store: store URLs in DB
-	}
-	
-	public static void runDB_Page(){
-		
-	}
-	
-	public static void runDB_Filter(){
-		
-	}
-	
-	public static void runDownLoader(){
-		//Get HTML 
 	}
 }

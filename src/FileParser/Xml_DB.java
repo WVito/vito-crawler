@@ -2,6 +2,7 @@ package FileParser;
 /**
  * @author vito
  * @category database configuration
+ * time: 2016-5-7
  */
 public class Xml_DB{
 	public String name;
